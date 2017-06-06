@@ -19,9 +19,9 @@ if (!repo) {
 }
 
 
-
-var GITHUB_USER = "aWildOtto";
-var GITHUB_TOKEN = "4699b7c7d8647420b412ba21701b5b65d0c39452";
+require('dotenv').config();
+var GITHUB_USER = process.env.GITHUB_USER;
+var GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -45,7 +45,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 getRepoContributors(owner, repo, function(body) {
-  console.log("Body type: ", typeof body);
+  console.log(body);
   if(body.message){
     console.log("nothing found");
     return false;
