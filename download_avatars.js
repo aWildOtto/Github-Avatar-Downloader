@@ -1,8 +1,23 @@
 var request = require('request');
 var https = require('https');
 var fs = require('fs');
-
+var args = process.argv.slice(2);
+var owner = args[0];
+var repo = args[1];
 console.log('Welcome to the GitHub Avatar Downloader!');
+if (!owner) {
+  owner = "jquery";
+  console.log("no owner or repo entered");
+  console.log("Usage: node download_avatars.js <owner> <repo>");
+  return;
+}
+if (!repo) {
+  repo = "jquery";
+  console.log("no repo entered");
+  console.log("Usage: node download_avatars.js <owner> <repo>");
+  return;
+}
+
 
 
 var GITHUB_USER = "aWildOtto";
@@ -29,8 +44,13 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 }
 
-getRepoContributors("jquery", "jquery", function(body) {
+getRepoContributors(owner, repo, function(body) {
   console.log("Body type: ", typeof body);
+  if(body.message){
+    console.log("nothing found");
+    return false;
+  }
+
   for(var i of body){
     //console.log(i.avatar_url);
     downloadImageByURL(i.avatar_url, i.login+".jpg");
