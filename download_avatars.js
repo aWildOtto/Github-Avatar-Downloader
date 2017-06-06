@@ -14,12 +14,21 @@ function getRepoContributors(repoOwner, repoName, cb) {
       'User-Agent': "Otto's awesome agent"
     }
   };
-  request(options,cb);
+  request.get(options,function(err, result, body){
+    if (err) {
+      throw err;
+    }
+    else{
+      var bodyObj = JSON.parse(body);
+      cb(bodyObj);
+    }
+  });
 
 }
 
-getRepoContributors("jquery", "jquery", function(err, result, body) {
-  console.log("Errors: ", err);
-  console.log("Result: ", result);
-  console.log("Body: ", body);
+getRepoContributors("jquery", "jquery", function(body) {
+  console.log("Body type: ", typeof body);
+  for(var i of body){
+    console.log(i.avatar_url);
+  }
 });
